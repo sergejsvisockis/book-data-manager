@@ -19,7 +19,6 @@
 
         <flink-core.version>2.0.0</flink-core.version>
         <flink-connector-kafka.version>4.0.0-2.0</flink-connector-kafka.version>
-        <flink-connector-aws.version>5.0.0-1.20</flink-connector-aws.version>
         <flink-connector-dynamodb.version>5.1-SNAPSHOT</flink-connector-dynamodb.version>
     </properties>
 

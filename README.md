@@ -4,9 +4,9 @@ Flink job to ingest a book event from Kafka, transform it and load into the AWS 
 ## Prerequisites
 
 1. Run `init.sh` script in the root directory (this step is needed because current dynamodb connector dependency have
-   missing import in one of the classes, so therefore we need to clone the repo and build the latest snapshot) Once this
-   is fixed and the version 5.1 is release in MAven central this stem could be skipped and an `init.sh` script could be
-   removed.
+   missing StatefulSinkWriter and InitContext imports in the DynamoDbSink, so therefore it's required to clone the repo
+   and build the latest snapshot). Once this is fixed and the version 5.1 is release in Maven central this stem could
+   be skipped and an `init.sh` script could be removed.
 2. Setup Kafka - follow this guide - [Kafka Quickstart](https://kafka.apache.org/quickstart)
 3. Create DynamoDB table:
 ```bash
@@ -26,3 +26,8 @@ Flink job to ingest a book event from Kafka, transform it and load into the AWS 
 
 where YOUR_AWS_ACCESS_KEY_ID and YOUR_AWS_SECRET_ACCESS_KEY are your AWS credentials and YOUR_KAFKA_BROKER is your Kafka
 broker's host.
+
+7. Fire Kafka event from the `sample_data.json` file into the Kafka topic:
+```bash
+/bin/kafka-console-producer.sh --bootstrap-server localhost:9092 --topic book-keeping < /book-data-manager/sample_data.json
+```
