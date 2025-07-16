@@ -25,11 +25,6 @@
 
     <dependencies>
         <dependency>
-            <groupId>io.github.sergejsvisockis.bookmanager</groupId>
-            <artifactId>lib</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
-        <dependency>
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-core</artifactId>
             <version>${flink-core.version}</version>

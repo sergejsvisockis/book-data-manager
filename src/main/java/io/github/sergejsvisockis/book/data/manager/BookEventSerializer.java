@@ -2,7 +2,6 @@ package io.github.sergejsvisockis.book.data.manager;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.github.sergejsvisockis.bookmanager.lib.BookEvent;
 import org.apache.flink.api.common.serialization.DeserializationSchema;
 import org.apache.flink.api.common.serialization.SerializationSchema;
 import org.apache.flink.api.common.typeinfo.BasicTypeInfo;
@@ -20,6 +19,9 @@ public class BookEventSerializer implements DeserializationSchema<BookEvent>, Se
 
     @Override
     public BookEvent deserialize(byte[] bytes) throws IOException {
+        if (bytes.length == 0) {
+            return new BookEvent();
+        }
         return objectMapper.readValue(bytes, BookEvent.class);
     }
 

@@ -1,6 +1,5 @@
 package io.github.sergejsvisockis.book.data.manager;
 
-import io.github.sergejsvisockis.bookmanager.lib.BookEvent;
 import org.apache.flink.api.common.JobExecutionResult;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.connector.aws.config.AWSConfigConstants;
@@ -12,6 +11,7 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Collections;
 import java.util.Properties;
 
 public class BookKeepingJob {
@@ -45,6 +45,7 @@ public class BookKeepingJob {
                         .setDynamoDbProperties(getDynamoDbProperties())
                         .setTableName("book-keeper")
                         .setElementConverter(new DefaultDynamoDbElementConverter<>())
+                        .setOverwriteByPartitionKeys(Collections.singletonList("bookId"))
                         .build());
         try {
             return env.execute();
