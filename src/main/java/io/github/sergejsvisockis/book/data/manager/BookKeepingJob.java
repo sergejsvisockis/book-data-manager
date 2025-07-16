@@ -2,6 +2,7 @@ package io.github.sergejsvisockis.book.data.manager;
 
 import org.apache.flink.api.common.JobExecutionResult;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
+import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.connector.aws.config.AWSConfigConstants;
 import org.apache.flink.connector.dynamodb.sink.DefaultDynamoDbElementConverter;
 import org.apache.flink.connector.dynamodb.sink.DynamoDbSink;
@@ -25,7 +26,7 @@ public class BookKeepingJob {
 
     private static JobExecutionResult execute() {
         KafkaSource<BookEvent> source = KafkaSource.<BookEvent>builder()
-                .setBootstrapServers("localhost:9092")
+                .setBootstrapServers(System.getProperty("KAFKA_BROKER"))
                 .setTopics("book-keeping")
                 .setGroupId("sv-group")
                 .setStartingOffsets(OffsetsInitializer.earliest())
@@ -35,23 +36,30 @@ public class BookKeepingJob {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
         env.fromSource(source, WatermarkStrategy.noWatermarks(), "Book Kafka source")
-                .map(event -> {
-                    LOG.info("En event received: {}", event);
-                    event.setTitle(event.getTitle() + "-HaH");
-                    return event;
-                })
+                .map(transformBookEvent())
                 .returns(BookEvent.class)
-                .sinkTo(DynamoDbSink.<BookEvent>builder()
-                        .setDynamoDbProperties(getDynamoDbProperties())
-                        .setTableName("book-keeper")
-                        .setElementConverter(new DefaultDynamoDbElementConverter<>())
-                        .setOverwriteByPartitionKeys(Collections.singletonList("bookId"))
-                        .build());
+                .sinkTo(getDynamoDbSink());
         try {
-            return env.execute();
+            return env.execute("Book Keeping Job");
         } catch (Exception e) {
             throw new IllegalStateException("Failed to execute the pipeline", e);
         }
+    }
+
+    private static MapFunction<BookEvent, BookEvent> transformBookEvent() {
+        return event -> {
+            event.setTitle(event.getTitle() + "-HaH");
+            return event;
+        };
+    }
+
+    private static DynamoDbSink<BookEvent> getDynamoDbSink() {
+        return DynamoDbSink.<BookEvent>builder()
+                .setDynamoDbProperties(getDynamoDbProperties())
+                .setTableName("book-keeper")
+                .setElementConverter(new DefaultDynamoDbElementConverter<>())
+                .setOverwriteByPartitionKeys(Collections.singletonList("bookId"))
+                .build();
     }
 
     private static Properties getDynamoDbProperties() {

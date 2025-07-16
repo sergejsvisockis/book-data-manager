@@ -19,7 +19,10 @@ Flink job to ingest a book event from Kafka, transform it and load into the AWS 
 5. Create Kafka topic according to the documentation from the step number 2
 6. In IDE run configuration add the following VM options:
 ```text
+   -DKAFKA_BROKER=YOUR_KAFKA_BROKER \
    -DAWS_ACCESS_KEY_ID=YOUR_AWS_ACCESS_KEY_ID \
    -DAWS_SECRET_ACCESS_KEY=YOUR_AWS_SECRET_ACCESS_KEY \
 ```
-where YOUR_AWS_ACCESS_KEY_ID and YOUR_AWS_SECRET_ACCESS_KEY are your AWS credentials.
+
+where YOUR_AWS_ACCESS_KEY_ID and YOUR_AWS_SECRET_ACCESS_KEY are your AWS credentials and YOUR_KAFKA_BROKER is your Kafka
+broker's host.
