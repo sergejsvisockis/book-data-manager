@@ -8,8 +8,8 @@ Flink job to ingest a book event from Kafka, transform it and load into the AWS 
 ```bash
    aws dynamodb create-table \
     --table-name book-keeper \
-    --attribute-definitions AttributeName=documentId,AttributeType=S \
-    --key-schema AttributeName=documentId,KeyType=HASH \
+    --attribute-definitions AttributeName=bookId,AttributeType=S \
+    --key-schema AttributeName=bookId,KeyType=HASH \
     --provisioned-throughput ReadCapacityUnits=5,WriteCapacityUnits=5
    ```
 5. Create Kafka topic according to the documentation from the step number 2
