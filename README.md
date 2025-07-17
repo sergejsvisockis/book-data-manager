@@ -11,7 +11,7 @@ Flink job to ingest a book event from Kafka, transform it and load into the AWS 
 3. Create DynamoDB table:
 ```bash
 aws dynamodb create-table \
- --table-name book-keeper \
+ --table-name books \
  --attribute-definitions AttributeName=bookId,AttributeType=S \
  --key-schema AttributeName=bookId,KeyType=HASH \
  --provisioned-throughput ReadCapacityUnits=5,WriteCapacityUnits=5
@@ -29,5 +29,5 @@ broker's host.
 
 7. Fire Kafka event from the `sample_data.json` file into the Kafka topic:
 ```bash
-/bin/kafka-console-producer.sh --bootstrap-server localhost:9092 --topic book-keeping < /book-data-manager/sample_data.json
+/bin/kafka-console-producer.sh --bootstrap-server localhost:9092 --topic books-topic < /book-data-manager/sample_data.json
 ```

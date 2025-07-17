@@ -27,7 +27,7 @@ public class BookProcessingJob {
     private static JobExecutionResult execute() {
         KafkaSource<BookEvent> source = KafkaSource.<BookEvent>builder()
                 .setBootstrapServers(System.getProperty("KAFKA_BROKER"))
-                .setTopics("book-keeping")
+                .setTopics("books-topic")
                 .setGroupId("sv-group")
                 .setStartingOffsets(OffsetsInitializer.earliest())
                 .setValueOnlyDeserializer(new BookEventSerializer())
@@ -40,7 +40,7 @@ public class BookProcessingJob {
                 .returns(BookEvent.class)
                 .sinkTo(getDynamoDbSink());
         try {
-            return env.execute("Book Keeping Job");
+            return env.execute("Book ETL");
         } catch (Exception e) {
             throw new IllegalStateException("Failed to execute the pipeline", e);
         }
@@ -56,7 +56,7 @@ public class BookProcessingJob {
     private static DynamoDbSink<BookEvent> getDynamoDbSink() {
         return DynamoDbSink.<BookEvent>builder()
                 .setDynamoDbProperties(getDynamoDbProperties())
-                .setTableName("book-keeper")
+                .setTableName("books")
                 .setElementConverter(new DefaultDynamoDbElementConverter<>())
                 .setOverwriteByPartitionKeys(Collections.singletonList("bookId"))
                 .build();
