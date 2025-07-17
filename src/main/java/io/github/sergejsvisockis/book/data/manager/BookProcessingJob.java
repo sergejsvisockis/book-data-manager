@@ -15,13 +15,13 @@ import org.slf4j.LoggerFactory;
 import java.util.Collections;
 import java.util.Properties;
 
-public class BookKeepingJob {
+public class BookProcessingJob {
 
-    private static final Logger LOG = LoggerFactory.getLogger(BookKeepingJob.class);
+    private static final Logger LOG = LoggerFactory.getLogger(BookProcessingJob.class);
 
     public static void main(String[] args) throws Exception {
         JobExecutionResult execute = execute();
-        LOG.info("Accumulated results: {}", execute.getAllAccumulatorResults());
+        LOG.info("Job execution results: {}", execute.getAllAccumulatorResults());
     }
 
     private static JobExecutionResult execute() {

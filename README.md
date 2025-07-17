@@ -3,9 +3,9 @@ Flink job to ingest a book event from Kafka, transform it and load into the AWS 
 
 ## Prerequisites
 
-1. Run `init.sh` script in the root directory (this step is needed because current dynamodb connector dependency
+1. Run `init.sh` script in the root directory (this step is needed since current DynamoDB connector dependency
    (v5.0.0-1.20) is incompatible with the latest flink-core v2.0.0).
-   Once this is fixed and the version 5.1 is released in Maven central this step could be skipped and an `init.sh` 
+   Once this is fixed and the version 5.1 is released in Maven central this step can be skipped and an `init.sh` 
    script could be removed.
 2. Setup Kafka - follow this guide - [Kafka Quickstart](https://kafka.apache.org/quickstart)
 3. Create DynamoDB table:
